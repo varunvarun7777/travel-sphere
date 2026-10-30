@@ -1,0 +1,212 @@
+"""Static city + attraction data for TravelSphere.
+
+Prices are adult tickets in local currency (Jaipur uses Indian-resident rates).
+Opening hours are typical/high-season hours; ``closed_days`` uses Mon=0 .. Sun=6.
+"""
+from __future__ import annotations
+
+TAGS = ["art", "history", "architecture", "nature", "food", "nightlife", "shopping", "views", "religion", "local"]
+KINDS = ["Museum", "Landmark", "Park", "Viewpoint", "Market", "Neighbourhood", "Church", "Temple", "Shrine", "Fort", "Experience"]
+BEST = ["any", "morning", "sunset", "evening"]
+
+CITIES: dict[str, dict] = {
+    "paris": {"id": "paris", "name": "Paris", "country": "France", "lat": 48.8566, "lng": 2.3522,
+              "tz": "Europe/Paris", "currency": "EUR", "symbol": "€"},
+    "rome": {"id": "rome", "name": "Rome", "country": "Italy", "lat": 41.8986, "lng": 12.4823,
+             "tz": "Europe/Rome", "currency": "EUR", "symbol": "€"},
+    "tokyo": {"id": "tokyo", "name": "Tokyo", "country": "Japan", "lat": 35.6812, "lng": 139.7671,
+              "tz": "Asia/Tokyo", "currency": "JPY", "symbol": "¥"},
+    "jaipur": {"id": "jaipur", "name": "Jaipur", "country": "India", "lat": 26.9124, "lng": 75.7873,
+               "tz": "Asia/Kolkata", "currency": "INR", "symbol": "₹"},
+}
+
+
+def _p(id, name, kind, tags, lat, lng, duration, price, open_, close, closed, best, popularity, blurb):
+    return {"id": id, "name": name, "kind": kind, "tags": list(tags), "lat": lat, "lng": lng,
+            "duration": duration, "price": price, "open": open_, "close": close,
+            "closed_days": list(closed), "best": best, "popularity": popularity,
+            "blurb": blurb, "custom": False}
+
+
+PLACES: dict[str, list[dict]] = {
+    "paris": [
+        _p("eiffel", "Eiffel Tower", "Landmark", ["architecture", "views", "history"], 48.8584, 2.2945, 120, 36.1,
+           "09:30", "23:00", [], "sunset", 10, "Gustave Eiffel's iron lattice tower, best seen as the city lights come on."),
+        _p("louvre", "Louvre Museum", "Museum", ["art", "history"], 48.8606, 2.3376, 180, 22,
+           "09:00", "18:00", [1], "any", 10, "The world's most-visited museum, home of the Mona Lisa and Winged Victory."),
+        _p("orsay", "Musée d'Orsay", "Museum", ["art", "architecture"], 48.8600, 2.3266, 150, 16,
+           "09:30", "18:00", [0], "any", 9, "Impressionist masterpieces inside a grand Beaux-Arts railway station."),
+        _p("notre_dame", "Notre-Dame Cathedral", "Church", ["religion", "architecture", "history"], 48.8530, 2.3499, 60, 0,
+           "07:45", "19:00", [], "morning", 9, "The restored Gothic cathedral on Île de la Cité, reopened in December 2024."),
+        _p("sainte_chapelle", "Sainte-Chapelle", "Church", ["religion", "art", "architecture"], 48.8554, 2.3450, 45, 13,
+           "09:00", "19:00", [], "any", 8, "A 13th-century chapel wrapped in floor-to-ceiling stained glass."),
+        _p("sacre_coeur", "Sacré-Cœur Basilica", "Church", ["religion", "views", "architecture"], 48.8867, 2.3431, 75, 0,
+           "06:30", "22:30", [], "sunset", 9, "White-domed basilica crowning Montmartre with sweeping views over Paris."),
+        _p("montmartre", "Place du Tertre & Montmartre", "Neighbourhood", ["art", "local", "food"], 48.8865, 2.3408, 75, 0,
+           "08:00", "23:00", [], "any", 8, "Village-like hilltop streets where painters still set up their easels."),
+        _p("arc_triomphe", "Arc de Triomphe", "Viewpoint", ["history", "views", "architecture"], 48.8738, 2.2950, 60, 16,
+           "10:00", "23:00", [], "any", 8, "Napoleon's triumphal arch with a rooftop view straight down the Champs-Élysées."),
+        _p("catacombs", "Catacombs of Paris", "Experience", ["history"], 48.8339, 2.3324, 75, 29,
+           "09:45", "20:30", [0], "any", 8, "Underground ossuary lined with the bones of six million Parisians."),
+        _p("luxembourg", "Luxembourg Gardens", "Park", ["nature", "local"], 48.8462, 2.3372, 60, 0,
+           "07:30", "20:30", [], "any", 8, "Formal French gardens with pony rides, toy sailboats and green chairs."),
+        _p("rodin", "Musée Rodin", "Museum", ["art", "nature"], 48.8553, 2.3159, 75, 14,
+           "10:00", "18:30", [0], "any", 7, "Rodin's sculptures, including The Thinker, set in a rose-filled garden."),
+        _p("orangerie", "Musée de l'Orangerie", "Museum", ["art"], 48.8638, 2.3227, 60, 12.5,
+           "09:00", "18:00", [1], "any", 7, "Monet's immersive Water Lilies panels in two oval rooms."),
+        _p("invalides", "Les Invalides & Army Museum", "Museum", ["history", "architecture"], 48.8550, 2.3125, 90, 15,
+           "10:00", "18:00", [], "any", 7, "Gilded dome over Napoleon's tomb and France's military museum."),
+        _p("palais_garnier", "Palais Garnier", "Landmark", ["architecture", "art"], 48.8720, 2.3316, 60, 15,
+           "10:00", "17:00", [], "any", 7, "The opulent 19th-century opera house that inspired The Phantom of the Opera."),
+        _p("marais", "Le Marais", "Neighbourhood", ["local", "shopping", "food", "history"], 48.8575, 2.3600, 90, 0,
+           "10:00", "22:00", [], "any", 8, "Medieval lanes packed with boutiques, falafel joints and hidden courtyards."),
+        _p("enfants_rouges", "Marché des Enfants Rouges", "Market", ["food", "local"], 48.8628, 2.3618, 45, 0,
+           "08:30", "20:30", [0], "any", 6, "Paris's oldest covered market, with Moroccan, Japanese and French stalls."),
+        _p("rue_cler", "Rue Cler", "Market", ["food", "local", "shopping"], 48.8556, 2.3065, 45, 0,
+           "08:30", "19:30", [], "any", 6, "Pedestrian market street of cheese shops, bakeries and cafés near the Eiffel Tower."),
+        _p("latin_quarter", "Latin Quarter", "Neighbourhood", ["local", "food", "history"], 48.8493, 2.3470, 60, 0,
+           "09:00", "23:00", [], "any", 7, "Student quarter of bookshops, bistros and the Sorbonne."),
+        _p("canal_st_martin", "Canal Saint-Martin", "Neighbourhood", ["local", "nightlife", "food"], 48.8710, 2.3660, 60, 0,
+           "10:00", "23:59", [], "evening", 6, "Iron footbridges and canal-side bars where locals gather at dusk."),
+        _p("seine_cruise", "Seine River Cruise", "Experience", ["views", "history"], 48.8600, 2.2930, 60, 19,
+           "10:00", "22:30", [], "evening", 7, "An hour gliding past the Louvre, Notre-Dame and the Eiffel Tower."),
+        _p("versailles", "Palace of Versailles", "Landmark", ["history", "architecture", "art", "nature"], 48.8049, 2.1204, 240, 21,
+           "09:00", "18:30", [0], "any", 9, "Louis XIV's dazzling palace, Hall of Mirrors and vast formal gardens."),
+    ],
+    "rome": [
+        _p("colosseum", "Colosseum", "Landmark", ["history", "architecture"], 41.8902, 12.4922, 120, 18,
+           "08:30", "19:00", [], "morning", 10, "The 2,000-year-old amphitheatre where gladiators once fought."),
+        _p("roman_forum", "Roman Forum & Palatine Hill", "Landmark", ["history", "architecture", "views"], 41.8925, 12.4853, 120, 0,
+           "08:30", "19:00", [], "any", 9, "Ruins of ancient Rome's civic heart; entry is included in the Colosseum ticket."),
+        _p("pantheon", "Pantheon", "Church", ["history", "architecture", "religion"], 41.8986, 12.4769, 45, 5,
+           "09:00", "19:00", [], "any", 10, "A perfectly preserved Roman temple with a concrete dome open to the sky."),
+        _p("trevi", "Trevi Fountain", "Landmark", ["architecture", "art"], 41.9009, 12.4833, 30, 0,
+           "00:00", "23:59", [], "any", 10, "Baroque fountain where a tossed coin promises a return to Rome."),
+        _p("spanish_steps", "Spanish Steps", "Landmark", ["architecture", "shopping", "local"], 41.9060, 12.4828, 30, 0,
+           "00:00", "23:59", [], "any", 8, "135 elegant steps rising from Piazza di Spagna to Trinità dei Monti."),
+        _p("vatican_museums", "Vatican Museums & Sistine Chapel", "Museum", ["art", "religion", "history"], 41.9065, 12.4536, 210, 20,
+           "08:00", "18:00", [6], "morning", 10, "Papal art collections culminating in Michelangelo's Sistine ceiling."),
+        _p("st_peters", "St. Peter's Basilica", "Church", ["religion", "architecture", "art"], 41.9022, 12.4539, 90, 0,
+           "07:00", "19:00", [], "morning", 10, "The largest church in Christendom, with Michelangelo's Pietà and dome."),
+        _p("castel_sant_angelo", "Castel Sant'Angelo", "Fort", ["history", "views"], 41.9031, 12.4663, 90, 16,
+           "09:00", "19:30", [0], "any", 8, "Hadrian's mausoleum turned papal fortress, with a rooftop terrace over the Tiber."),
+        _p("borghese", "Galleria Borghese", "Museum", ["art"], 41.9142, 12.4921, 120, 15,
+           "09:00", "19:00", [0], "any", 9, "Bernini sculptures and Caravaggios in a cardinal's villa, by timed entry only."),
+        _p("pincio", "Pincio Terrace", "Viewpoint", ["views", "nature"], 41.9113, 12.4797, 45, 0,
+           "00:00", "23:59", [], "sunset", 7, "Balcony of Villa Borghese park overlooking Piazza del Popolo and St. Peter's dome."),
+        _p("piazza_navona", "Piazza Navona", "Landmark", ["architecture", "art", "local"], 41.8992, 12.4731, 40, 0,
+           "00:00", "23:59", [], "any", 9, "Oval Baroque square built on Domitian's stadium, centred on Bernini's fountain."),
+        _p("campo_de_fiori", "Campo de' Fiori Market", "Market", ["food", "local", "shopping"], 41.8956, 12.4722, 45, 0,
+           "07:00", "14:00", [6], "morning", 7, "Lively morning market of produce, flowers and spices."),
+        _p("trastevere", "Trastevere", "Neighbourhood", ["food", "nightlife", "local"], 41.8894, 12.4700, 120, 0,
+           "10:00", "23:59", [], "evening", 9, "Ivy-draped cobbled lanes full of trattorias that come alive after dark."),
+        _p("testaccio_market", "Mercato di Testaccio", "Market", ["food", "local"], 41.8771, 12.4757, 60, 0,
+           "07:00", "15:30", [6], "any", 6, "Locals' covered market famous for its supplì and trapizzino stalls."),
+        _p("capitoline", "Capitoline Museums", "Museum", ["art", "history", "views"], 41.8930, 12.4828, 120, 15,
+           "09:30", "19:30", [], "any", 7, "The world's oldest public museum, on Michelangelo's Piazza del Campidoglio."),
+        _p("caracalla", "Baths of Caracalla", "Landmark", ["history", "architecture"], 41.8790, 12.4925, 75, 8,
+           "09:00", "19:00", [0], "any", 6, "Towering ruins of a 3rd-century imperial bath complex."),
+        _p("san_callisto", "Catacombs of San Callisto", "Experience", ["history", "religion"], 41.8590, 12.5110, 75, 10,
+           "09:00", "17:00", [2], "any", 6, "Early-Christian underground burial galleries off the Appian Way."),
+        _p("ghetto", "Jewish Ghetto", "Neighbourhood", ["food", "history", "local"], 41.8925, 12.4777, 60, 0,
+           "09:00", "23:00", [], "any", 6, "Historic quarter known for carciofi alla giudia and the Portico d'Ottavia."),
+        _p("monti", "Monti", "Neighbourhood", ["local", "shopping", "food", "nightlife"], 41.8955, 12.4930, 60, 0,
+           "10:00", "23:59", [], "evening", 6, "Bohemian district of vintage shops and wine bars near the Forum."),
+    ],
+    "tokyo": [
+        _p("senso_ji", "Sensō-ji Temple", "Temple", ["religion", "history", "local"], 35.7148, 139.7967, 75, 0,
+           "06:00", "17:00", [], "morning", 10, "Tokyo's oldest temple, reached through Kaminarimon gate and Nakamise street."),
+        _p("meiji_jingu", "Meiji Jingu", "Shrine", ["religion", "nature", "history"], 35.6764, 139.6993, 75, 0,
+           "06:00", "16:30", [], "morning", 9, "Serene Shinto shrine in a forest of 100,000 trees beside Harajuku."),
+        _p("shibuya_crossing", "Shibuya Crossing", "Landmark", ["local", "nightlife"], 35.6595, 139.7005, 30, 0,
+           "00:00", "23:59", [], "evening", 9, "The world's busiest scramble crossing, most dazzling after dark."),
+        _p("shibuya_sky", "Shibuya Sky", "Viewpoint", ["views"], 35.6585, 139.7022, 60, 2700,
+           "10:00", "22:30", [], "sunset", 9, "Open-air rooftop 230 m above Shibuya with views to Mount Fuji."),
+        _p("tokyo_national_museum", "Tokyo National Museum", "Museum", ["art", "history"], 35.7188, 139.7765, 150, 1000,
+           "09:30", "17:00", [0], "any", 8, "Japan's largest collection of samurai armour, ceramics and national treasures."),
+        _p("ueno_park", "Ueno Park", "Park", ["nature", "local"], 35.7156, 139.7730, 60, 0,
+           "05:00", "23:00", [], "any", 7, "Leafy park of museums, a lotus pond and Tokyo's favourite cherry blossoms."),
+        _p("ameyoko", "Ameyoko Market", "Market", ["food", "shopping", "local"], 35.7101, 139.7745, 60, 0,
+           "10:00", "20:00", [], "any", 7, "Bustling street market under the rail tracks with snacks and bargains."),
+        _p("tsukiji_outer", "Tsukiji Outer Market", "Market", ["food", "local"], 35.6655, 139.7707, 75, 0,
+           "06:00", "14:00", [6], "morning", 8, "Seafood stalls serving tamagoyaki, sushi and grilled scallops from dawn."),
+        _p("imperial_east_gardens", "Imperial Palace East Gardens", "Park", ["nature", "history"], 35.6852, 139.7528, 75, 0,
+           "09:00", "16:30", [0, 4], "any", 7, "Former Edo Castle grounds with stone walls, moats and seasonal gardens."),
+        _p("teamlab_planets", "teamLab Planets", "Experience", ["art"], 35.6491, 139.7898, 120, 3800,
+           "09:00", "22:00", [], "any", 9, "Immersive digital-art museum where you walk barefoot through water and light."),
+        _p("golden_gai", "Golden Gai", "Neighbourhood", ["nightlife", "local", "food"], 35.6938, 139.7046, 90, 0,
+           "19:00", "23:59", [], "evening", 8, "Six alleys of tiny, quirky bars squeezed into Shinjuku."),
+        _p("omoide_yokocho", "Omoide Yokocho", "Neighbourhood", ["food", "nightlife", "local"], 35.6929, 139.6996, 75, 0,
+           "17:00", "23:59", [], "evening", 7, "Smoky lantern-lit alley of yakitori counters by Shinjuku Station."),
+        _p("takeshita", "Takeshita Street, Harajuku", "Neighbourhood", ["shopping", "local", "food"], 35.6716, 139.7031, 60, 0,
+           "10:00", "20:00", [], "any", 8, "Youth-fashion street of crêpe stands, kawaii boutiques and cosplay shops."),
+        _p("akihabara", "Akihabara", "Neighbourhood", ["shopping", "local", "nightlife"], 35.6984, 139.7731, 90, 0,
+           "10:00", "21:00", [], "any", 8, "Electric Town of anime stores, retro arcades and maid cafés."),
+        _p("skytree", "Tokyo Skytree", "Viewpoint", ["views", "architecture"], 35.7101, 139.8107, 90, 2400,
+           "10:00", "22:00", [], "any", 8, "Japan's tallest structure with a glass-floored deck at 350 m."),
+        _p("shinjuku_gyoen", "Shinjuku Gyoen", "Park", ["nature"], 35.6852, 139.7101, 90, 500,
+           "09:00", "18:00", [0], "any", 8, "Vast garden blending Japanese, English and French landscape styles."),
+        _p("tokyo_tower", "Tokyo Tower", "Viewpoint", ["views", "architecture"], 35.6586, 139.7454, 60, 1500,
+           "09:00", "22:30", [], "any", 7, "The orange-and-white Eiffel-inspired tower, a Showa-era icon."),
+        _p("hamarikyu", "Hamarikyu Gardens", "Park", ["nature", "history"], 35.6600, 139.7633, 60, 300,
+           "09:00", "17:00", [], "any", 6, "Tidal-pond garden with a teahouse framed by skyscrapers."),
+        _p("mori_art", "Mori Art Museum", "Museum", ["art", "views"], 35.6604, 139.7292, 90, 2000,
+           "10:00", "22:00", [], "any", 6, "Contemporary art 53 floors up in Roppongi Hills, with a city-view deck."),
+    ],
+    "jaipur": [
+        _p("amber_fort", "Amber Fort", "Fort", ["history", "architecture", "views"], 26.9855, 75.8513, 150, 100,
+           "08:00", "17:30", [], "morning", 10, "Hilltop fort-palace of honey sandstone and mirrored halls above Maota Lake."),
+        _p("jaigarh_fort", "Jaigarh Fort", "Fort", ["history", "views"], 26.9851, 75.8456, 90, 150,
+           "09:00", "16:30", [], "any", 7, "Rugged fortress above Amber, home to Jaivana, once the world's largest wheeled cannon."),
+        _p("panna_meena", "Panna Meena ka Kund", "Landmark", ["history", "architecture", "local"], 26.9871, 75.8540, 30, 0,
+           "07:00", "18:00", [], "any", 6, "Geometric 16th-century stepwell with criss-crossing staircases."),
+        _p("anokhi_museum", "Anokhi Museum of Hand Printing", "Museum", ["art", "local"], 26.9863, 75.8550, 60, 80,
+           "10:30", "16:45", [0], "any", 5, "Restored haveli showing Rajasthan's block-printing craft, with live demos."),
+        _p("nahargarh", "Nahargarh Fort", "Fort", ["views", "history"], 26.9373, 75.8155, 90, 50,
+           "10:00", "22:00", [], "sunset", 8, "Ridge-top fort with the best sunset panorama over the Pink City."),
+        _p("hawa_mahal", "Hawa Mahal", "Landmark", ["architecture", "history"], 26.9239, 75.8267, 45, 50,
+           "09:00", "16:30", [], "morning", 10, "The Palace of Winds, a honeycomb façade of 953 latticed windows."),
+        _p("city_palace", "City Palace", "Museum", ["history", "architecture", "art"], 26.9258, 75.8237, 120, 200,
+           "09:30", "17:00", [], "any", 9, "Royal residence of courtyards, peacock gates and textile galleries."),
+        _p("jantar_mantar", "Jantar Mantar", "Landmark", ["history", "architecture"], 26.9248, 75.8246, 60, 50,
+           "09:00", "16:30", [], "any", 8, "UNESCO-listed 18th-century observatory with the world's largest stone sundial."),
+        _p("albert_hall", "Albert Hall Museum", "Museum", ["art", "history", "architecture"], 26.9118, 75.8195, 75, 40,
+           "09:00", "17:00", [], "any", 7, "Indo-Saracenic museum with an Egyptian mummy and Persian carpets."),
+        _p("jal_mahal", "Jal Mahal", "Viewpoint", ["views", "architecture"], 26.9535, 75.8463, 30, 0,
+           "06:00", "22:00", [], "any", 7, "A palace that appears to float in the middle of Man Sagar Lake."),
+        _p("patrika_gate", "Patrika Gate", "Landmark", ["architecture", "art"], 26.8416, 75.8007, 30, 0,
+           "08:00", "19:00", [], "any", 7, "Kaleidoscopic painted gateway at Jawahar Circle, a photographer's favourite."),
+        _p("birla_mandir", "Birla Mandir", "Temple", ["religion", "architecture"], 26.8920, 75.8155, 45, 0,
+           "08:00", "21:00", [], "any", 7, "Gleaming white-marble Lakshmi Narayan temple, lovely when lit at night."),
+        _p("galtaji", "Galtaji (Monkey Temple)", "Temple", ["religion", "nature", "history"], 26.9170, 75.8580, 75, 0,
+           "05:00", "21:00", [], "any", 7, "Pink-sandstone temples and sacred tanks in a gorge full of macaques."),
+        _p("johari_bazaar", "Johari Bazaar", "Market", ["shopping", "local", "food"], 26.9213, 75.8270, 75, 0,
+           "10:00", "21:00", [6], "any", 7, "Jewellers' bazaar beside LMB, famed for ghewar and kulfi."),
+        _p("bapu_bazaar", "Bapu Bazaar", "Market", ["shopping", "local"], 26.9180, 75.8235, 60, 0,
+           "11:00", "21:00", [6], "any", 6, "Textile and mojari-shoe market inside the pink walled city."),
+        _p("masala_chowk", "Masala Chowk", "Market", ["food", "local"], 26.9160, 75.8184, 45, 0,
+           "11:00", "23:00", [], "any", 6, "Open-air food court gathering Jaipur's famous street-food vendors."),
+        _p("mi_road_food", "MI Road Lassi & Kachori", "Market", ["food", "local"], 26.9165, 75.8090, 30, 0,
+           "08:00", "22:00", [], "any", 6, "Legendary Lassiwala and Rawat's pyaaz kachori on Mirza Ismail Road."),
+        _p("sisodia_rani", "Sisodia Rani Garden", "Park", ["nature", "history"], 26.9054, 75.8770, 45, 50,
+           "08:00", "18:00", [], "any", 5, "Terraced Mughal-style garden with fountains and Krishna murals."),
+        _p("chokhi_dhani", "Chokhi Dhani", "Experience", ["food", "local", "nightlife"], 26.7660, 75.8370, 180, 1100,
+           "17:00", "23:00", [], "evening", 8, "Recreated Rajasthani village with folk dance, camel rides and a thali dinner."),
+    ],
+}
+
+
+def get_city(city_id: str) -> dict | None:
+    return CITIES.get(city_id)
+
+
+def city_places(city_id: str) -> list[dict]:
+    return [dict(p, tags=list(p["tags"]), closed_days=list(p["closed_days"])) for p in PLACES.get(city_id, [])]
+
+
+def place_index(city_id: str) -> dict[str, dict]:
+    return {p["id"]: p for p in city_places(city_id)}
+
+
+def all_places() -> list[tuple[str, dict]]:
+    return [(cid, p) for cid in CITIES for p in PLACES[cid]]

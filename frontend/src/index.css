@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@theme {
+  --color-concrete: #E6E9E7;
+  --color-panel: #FAFBFA;
+  --color-ink: #11181F;
+  --color-steel: #5A6570;
+  --color-rule: #CDD3D0;
+  --color-signal: #FFC20E;
+
+  --color-line-1: #DA291C;
+  --color-line-2: #0072CE;
+  --color-line-3: #00965E;
+  --color-line-4: #7D3C98;
+  --color-line-5: #D9661F;
+  --color-line-6: #00A3AD;
+  --color-line-7: #A05A2C;
+
+  --font-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --font-sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Menlo, monospace;
+}
+
+/* Archivo width axis: semi-expanded for headings and station names. */
+@utility wide {
+  font-stretch: 112%;
+}
+@utility wider {
+  font-stretch: 125%;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-concrete);
+    color: var(--color-ink);
+  }
+  body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-signal);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--color-signal);
+    color: var(--color-ink);
+  }
+}
+
+/* Map markers (Leaflet divIcons) */
+.wl-station {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  border: 5px solid var(--c);
+  background: #fff;
+  color: var(--color-ink);
+  font: 900 11px/1 var(--font-display);
+  font-stretch: 112%;
+  cursor: pointer;
+}
+.wl-station.is-active {
+  outline: 3px solid var(--color-signal);
+  outline-offset: 1px;
+}
+.wl-station.is-faded {
+  opacity: 0.4;
+}
+.wl-base {
+  box-sizing: border-box;
+  display: block;
+  width: 18px;
+  height: 18px;
+  background: var(--color-ink);
+  border: 3px solid #fff;
+  outline: 1px solid var(--color-ink);
+}
+
+.leaflet-container {
+  font-family: var(--font-sans);
+  background: var(--color-concrete);
+}
+/* Mute the stock OSM palette so the day lines carry the colour. */
+.wl-tiles {
+  filter: grayscale(1) contrast(0.85) brightness(1.08);
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 4px;
+  border: 1px solid var(--color-rule);
+  box-shadow: none;
+}
+.leaflet-popup-content {
+  margin: 12px 14px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.leaflet-popup-tip {
+  box-shadow: none;
+  border: 1px solid var(--color-rule);
+}
+.leaflet-tooltip {
+  border-radius: 4px;
+  border: 1px solid var(--color-rule);
+  box-shadow: none;
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+.leaflet-bar a {
+  color: var(--color-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+  html,
+  body {
+    background: #fff;
+  }
+}

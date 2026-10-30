@@ -1,0 +1,12 @@
+**/node_modules
+frontend/dist
+backend/tests
+backend/.env
+**/*.db
+**/__pycache__
+.venv
+venv
+.env*
+**/.env*
+!backend/.env.example
+.vercel

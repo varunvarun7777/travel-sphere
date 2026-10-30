@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: travelsphere
+      POSTGRES_PASSWORD: travelsphere
+      POSTGRES_DB: travelsphere
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U travelsphere -d travelsphere"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    environment:
+      DATABASE_URL: postgresql://travelsphere:travelsphere@db:5432/travelsphere
+      SECRET_KEY: ${SECRET_KEY:-change-this-to-a-long-random-string-in-production}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      TRAVELSPHERE_AI: ${TRAVELSPHERE_AI:-on}
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+             python seed.py &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
